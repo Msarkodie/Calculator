@@ -49,6 +49,7 @@ function afterOperatorPressed(operater)
         shouldResetScreen = true;
         resetScreen();
         operation = operater.target.textContent;
+        shouldResetScreen = true;
 
     }
 
@@ -57,10 +58,26 @@ function afterOperatorPressed(operater)
     {
        current = screen.textContent;
        resetScreen();
-       if(operation == "+")
+
+       console.log(operation);
+       
+       switch(operation)
        {
-          result = add(current, previous);
+        case "+":
+            result = add(previous, current);
+            break;
+        case "-":
+            result = substract(previous, current);
+            break;
+        case "*" :
+            result = multiply(previous, current);
+            break;
+        case "/" :
+            result = divide(previous, current); 
+            break;      
+          
        }
+
        screen.textContent = result;
        previous = result;
        operation = operater.target.textContent;
@@ -80,16 +97,16 @@ return Number(first) + Number(second);
 //For subtracting two numbers
 function substract(first, second)
 {
-return (+first) - (+second);
+return Number(first) - Number(+second);
 }
 //For multiplying two numbers 
 function multiply(first, second)
 {
-return (+first) * (+second);
+return Number(first) * Number(+second);
 }
 //For dividing two numbers
 function divide(first, second)
 {
-return (+first) / (+second);
+return Number(first) / Number(second);
 }
 
