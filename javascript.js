@@ -7,6 +7,7 @@ var current = null;
 var operation = "";
 var result = null;
 var shouldResetScreen = false;
+var operatorAgain = false;
 
 // Event handler for typing numbers
 vals.forEach((val) => { 
@@ -34,6 +35,7 @@ function appendNumber(digit)
 {   
     resetScreen();
     screen.textContent+=digit.target.textContent;
+    operatorAgain = false
 
 }
 
@@ -43,6 +45,7 @@ function afterOperatorPressed(operater)
 {   
 //When an operator is entered, without a previous(for the first time)
 //pick screen number to be previous and reset screen
+   var checkOperatorAgain = 0;
     if(previous == null)
     {
         previous = screen.textContent;
@@ -55,37 +58,46 @@ function afterOperatorPressed(operater)
 
 //Else(previous stores a number) pick screen number to be current and perform operation 
     else
-    {
-       current = screen.textContent;
-       resetScreen();
+    { 
+        if(!operatorAgain)
+        {
+            current = screen.textContent;
+            resetScreen();
 
-       console.log(operation);
+            console.log(operation);
        
-       switch(operation)
-       {
-        case "+":
-            result = add(previous, current);
-            break;
-        case "-":
-            result = substract(previous, current);
-            break;
-        case "*" :
-            result = multiply(previous, current);
-            break;
-        case "/" :
-            result = divide(previous, current); 
-            break;      
-          
-       }
+            switch(operation)
+            {
+                case "+":
+                result = add(previous, current);
+                break;
+                case "-":
+                result = substract(previous, current);
+                break;
+                case "*" :
+                result = multiply(previous, current);
+                break;
+                case "/" :
+                result = divide(previous, current); 
+                break;      
+            }
 
-       screen.textContent = result;
-       previous = result;
-       operation = operater.target.textContent;
-       shouldResetScreen = true;
+           screen.textContent = result;
+           previous = result;
+           operation = operater.target.textContent;
+           shouldResetScreen = true;
+           operatorAgain = true;
+        }
+
+        else
+       {
+         operation = operater.target.textContent;
+       }
     
     }
-
-}
+       
+       
+    }
 
 
 
@@ -108,5 +120,11 @@ return Number(first) * Number(+second);
 function divide(first, second)
 {
 return Number(first) / Number(second);
+}
+
+//The equal sign result
+function equals(result)
+{
+    return result;
 }
 
