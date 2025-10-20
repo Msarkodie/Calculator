@@ -2,6 +2,7 @@
 const screen = document.querySelector("#screen-container");
 const vals = document.querySelectorAll(".val");
 const ops = document.querySelectorAll(".op");
+const undos = document.querySelectorAll(".undo");
 var previous = null;
 var current = null;
 var operation = "";
@@ -17,6 +18,11 @@ vals.forEach((val) => {
 //Event handler for pressing operators
 ops.forEach((op) => {
     op.addEventListener("click", (e)=> afterOperatorPressed(e))
+});
+
+//Event handler for undo buttons
+undos.forEach((undo) => {
+    undo.addEventListener("click", (e)=> afterUndoPressed(e))
 });
 
 //Clear the screen
@@ -79,7 +85,11 @@ function afterOperatorPressed(operater)
                 break;
                 case "/" :
                 result = divide(previous, current); 
-                break;      
+                break; 
+                case "AC":
+                clearCal(first, second, result);
+                break;
+
             }
 
            screen.textContent = result;
@@ -100,7 +110,24 @@ function afterOperatorPressed(operater)
     }
 
 
+function afterUndoPressed(undo)
+{
+   if(undo.target.textContent == "AC")
+   {
+    previous = null;
+    current = null;
+    result = null;
+    screen.textContent = 0;
+    console.log(previous);
+    console.log(current);
+    console.log(result);
+   }
 
+   else if(undo.target.textContent == "DEL" && !shouldResetScreen)
+   {
+       screen.textContent = screen.textContent.slice(0, screen.textContent.length-1);
+   }
+}
 //For adding two numbers
 function add(first, second)
 {
@@ -128,3 +155,5 @@ function equals(result)
     return result;
 }
 
+
+   
