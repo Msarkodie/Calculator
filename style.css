@@ -32,6 +32,7 @@
 
 #screen-container{
     display: flex;
+    flex-direction: column;
     justify-content: end;
     align-items: end;
     width: 190px;
@@ -39,6 +40,19 @@
     border: 5px solid black;
     border-radius: 5px;
     font-size: larger;
+    
+}
+
+.display
+{
+    border: 2px solid red;
+    height: 40px;
+    width: 180px;
+    display: flex;
+    justify-content: end;
+    align-items: end;
+
+
 }
 
 .button{
