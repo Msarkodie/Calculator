@@ -45,7 +45,6 @@
 
 .display
 {
-    border: 2px solid red;
     height: 40px;
     width: 180px;
     display: flex;
