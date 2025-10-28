@@ -15,18 +15,36 @@ var decimalOp = true;
 
 // Event handler for typing numbers
 vals.forEach((val) => { 
-    val.addEventListener("click",(e)=> appendNumber(e))
+    val.addEventListener("click",(e)=> appendNumber(e.target.textContent));
 });
+
 
 //Event handler for pressing operators
 ops.forEach((op) => {
-    op.addEventListener("click", (e)=> afterOperatorPressed(e))
+    op.addEventListener("click", (e)=> afterOperatorPressed(e.target.textContent))
 });
 
 //Event handler for undo buttons
 undos.forEach((undo) => {
     undo.addEventListener("click", (e)=> afterUndoPressed(e))
 });
+
+//Event handler for keyboard typing
+document.addEventListener('keydown', (event) => {
+    ops.forEach((op) => { 
+    if(op.textContent == event.key)
+    {
+        afterOperatorPressed(event.key);
+    }
+});
+    
+    if( event.key in vals){
+      appendNumber(event.key);
+    }
+    
+}
+);
+    
 
 //Clear the screen
 function resetScreen(screen)
@@ -43,15 +61,17 @@ function resetScreen(screen)
 function appendNumber(digit)
 {   
     resetScreen(screen2);
+    if(digit)
+
     //disabling the "." button after first clicking
-    if(digit.target.textContent == "." && decimalOp)
+    if(digit == "." && decimalOp)
     {
-      screen2.textContent+=digit.target.textContent;
+      screen2.textContent+=digit;
       decimalOp = false;
     }
-    else if(digit.target.textContent !== ".")
+    else if(digit !== ".")
     {
-       screen2.textContent+=digit.target.textContent;
+       screen2.textContent+=digit;
     }
     
     operatorAgain = false
@@ -70,7 +90,8 @@ function afterOperatorPressed(operater)
         previous = screen2.textContent;
         shouldResetScreen = true;
         resetScreen(screen2);
-        previousOperation = operater.target.textContent;
+        previousOperation = operater;
+        console.log("Previous" + previousOperation);
         shouldResetScreen = true;
         screen1.textContent = previous + previousOperation;
 
@@ -84,7 +105,8 @@ function afterOperatorPressed(operater)
             current = screen2.textContent;
             resetScreen(screen1);
             resetScreen(screen2);
-            currentOperation = operater.target.textContent;
+            currentOperation = operater;
+            console.log("Current: " + currentOperation)
 
             if(currentOperation == "=" && previousOperation !== "=")
             {
@@ -110,11 +132,11 @@ function afterOperatorPressed(operater)
        { 
 
         //When "=" is pressed before another operator, update the first screen.
-        if(previousOperation == "=" && operater.target.textContent !== "=")
+        if(previousOperation == "=" && operater !== "=")
             {
-                screen1.textContent = result + operater.target.textContent;
+                screen1.textContent = result + operater;
             }
-            previousOperation = operater.target.textContent;
+            previousOperation = operater;
        }
     
     }
